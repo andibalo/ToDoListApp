@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>BK Jquery Project</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script
+      src="https://kit.fontawesome.com/8baf7ecf86.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="container">
+      <form class="intro">
+        <h1>To-Do List App</h1>
+        <h3>By Andi Balo</h3>
+        <p>Howdy stranger, what should I call you?</p>
+        <input type="text" name="inputName" placeholder="Name..." />
+        <button id="nameButton">Submit</button>
+      </form>
+
+      <div class="formContainer">
+        <h1>
+          Hello <span id="username"></span>, <span id="greetingText"></span>
+        </h1>
+        <p>Click on "X" button to remove task</p>
+        <div class="counter">
+          <p id="total">Total : 0</p>
+          <p id="remaining">Remaining : 0</p>
+          <p id="completed">Completed : 0</p>
+        </div>
+
+        <form class="form">
+          <input
+            type="search"
+            placeholder="Insert your task here"
+            name="inputBox"
+          />
+          <button id="taskButton">Submit</button>
+        </form>
+      </div>
+      <ul id="list"></ul>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script>
+      var button = $("#taskButton");
+      var nameBox = $("input[name=inputName]");
+      var searchBox = $("input[name=inputBox]");
+      var taskList = $("#list");
+      var taskLists = $("#list li");
+      var greetingText = $("#greetingText");
+      var number = Math.floor(Math.random() * 5) + 1;
+      var total = 0;
+      var completed = 0;
+      var remaining = 0;
+
+      console.log(number);
+      switch (number) {
+        case 1:
+          greetingText.html("ready to conquer the world?");
+          break;
+        case 2:
+          greetingText.html("what do you want to do today?");
+          break;
+        case 3:
+          greetingText.html("a task a day keeps the doctor away.");
+          break;
+        case 4:
+          greetingText.html("you are looking like a million bucks.");
+          break;
+        default:
+          greetingText.html("follow @andibalo213 please.");
+      }
+
+      function updateText() {
+        $("#total").text(`Total : ${total}`);
+        $("#remaining").text(`Remaining : ${total - completed}`);
+        $("#completed").text(`Completed : ${completed}`);
+      }
+
+      $("button").click(e => e.preventDefault());
+
+      //Prevents highlighting text when click/dblclick
+      $(taskList).on("mousedown", e => e.preventDefault());
+
+      $(document).ready(() => {
+        $(".intro").fadeIn();
+      });
+
+      $("#nameButton").click(e => {
+        if (!nameBox.val()) {
+          nameBox.val("anonymous");
+        }
+
+        $("#username").html(nameBox.val());
+
+        $(".intro").fadeOut("normal", () => {
+          $(".formContainer").fadeIn("normal");
+        });
+      });
+
+      button.click(() => {
+        total++;
+        console.log("total", total);
+        if (!searchBox.val()) {
+          return alert("please input task ");
+        }
+        taskList.append(
+          `<li>${searchBox.val()} <button class="deleteButton" type="button"><i class= "fas fa-times"></i></button></li>`
+        );
+
+        updateText();
+        searchBox.val("");
+      });
+
+      //EVENT HANDLER FOR APPENDED ELEMENTS
+      //bcs if selector is the element it only binds event handle to elemnts CURRENTLY on screen, not appended
+
+      //BUBBLING EVENT
+      //without stop propagation the click event on child ele BUTTON will trigger BOTH its and parent ele Event handler
+      //stop propagtion prevents evnt from triggering parent event handlers
+
+      $(document).on("click", ".deleteButton", function(e) {
+        e.stopPropagation();
+
+        if ($("ul li").hasClass("markedDone")) {
+          total--;
+          completed--;
+          console.log("total", total);
+          console.log("done", completed);
+        } else {
+          total--;
+          console.log("total", total);
+        }
+
+        $(this)
+          .parent()
+          .fadeOut("fast");
+
+        updateText();
+      });
+
+      $(document).on("click", "li", function() {
+        if ($(this).hasClass("markedDone")) {
+          completed--;
+        } else {
+          completed++;
+        }
+        console.log("done", completed);
+        $(this).toggleClass("markedDone");
+
+        updateText();
+      });
+    </script>
+  </body>
+</html>

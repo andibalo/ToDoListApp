@@ -1,0 +1,59 @@
+.intro {
+  text-align: center;
+  display: none;
+  position: relative;
+}
+
+.formContainer {
+  text-align: center;
+  display: none;
+}
+
+.form h1,
+.form p {
+  margin: 0;
+}
+
+.counter {
+  width: 30%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+}
+#username {
+  text-transform: capitalize;
+}
+
+#list {
+  width: 30%;
+  margin: 0 auto;
+  padding: 30px;
+  list-style-type: none;
+}
+
+#list li {
+  display: flex;
+  cursor: pointer;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 10px;
+  text-transform: capitalize;
+  margin-bottom: 10px;
+}
+
+.deleteButton {
+  margin-left: auto;
+  position: relative;
+  z-index: 2;
+}
+.strike {
+  text-decoration: line-through;
+}
+
+.markedDone {
+  background-color: lightgreen;
+}
+
+.delete {
+  display: none;
+}
